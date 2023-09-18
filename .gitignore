@@ -1,0 +1,11 @@
+*.pyc
+.env
+.venv
+env/
+venv/
+instance/*
+!instance/.gitignore
+.webassets-cache
+__pycache__/
+*.py[cod]
+*$py.class
