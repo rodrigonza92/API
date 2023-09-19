@@ -87,18 +87,8 @@ class User:
         Args:
             - user (user): user object
         """
-
-        allowed_columns = {'first_name', 'last_name', 'birthday', 'email', 'username', 'passwd', 'id_server'}
-        query_parts = []
-        params = []
-        for key, value in user.__dict__.items():
-            if key in allowed_columns and value is not None:
-                value = ','.join(value)
-                query_parts.append(f"{key} = %s")
-                params.append(value)
-        params.append(user.id_user)
-
-        query = "UPDATE db_tif.usuario SET " + ", ".join(query_parts) + " WHERE id_user = %s"
+        params = user.first_name, user.last_name, user.birthday, user.email, user.username, user.password, user.id_server, user.id_user,
+        query = "UPDATE db_tif.usuario SET first_name = %s, last_name = %s, birthday = STR_TO_DATE(%s, '%d-%M-%Y'), email = %s, username = %s, passwd = %s, id_server = %s WHERE id_user = %s;"
         DatabaseConnection.execute_query(query, params=params)
     
     @classmethod
@@ -107,7 +97,6 @@ class User:
         Args:
             - user (user): user object with the id attribute
         """
-
-        query = "DELETE FROM usuario WHERE id_user = %s;"
-        params = user.user_id,
+        query = "DELETE FROM db_tif.usuario WHERE id_user = %s;"
+        params = user.id_user,
         DatabaseConnection.execute_query(query, params=params)
