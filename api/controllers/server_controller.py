@@ -5,21 +5,49 @@ from flask import request
 class ServerController:
     
     @classmethod
-    def get(cls):
-        pass
+    def get(cls, id_server):
+        """Get a server by id"""
+        server = Server(id_server=id_server)
+        result = Server.get(server)
+        if result is not None:
+            return result.serialize(), 200
 
     @classmethod
     def get_all(cls):
-        pass
+        """Get all servers"""
+        server_objects = Server.get_all()
+        servers = []
+        for server in server_objects:
+            servers.append(server.serialize())
+        return servers, 200
 
     @classmethod
     def create(cls):
-        pass
+        """Create a new server"""
+        data = request.json
+        
+        server = Server(**data)
+        Server.create(server)
+        return {'message': 'Server created successfully'}, 201
 
     @classmethod
-    def update(cls):
-        pass
+    def update(cls, id_server):
+        """Update a server"""
+        data = request.json
+        
+        data['id_server'] = id_server
+
+        server = Server(**data)
+        
+        Server.update(server)
+        
+        return {'message': 'Server updated successfully'}, 200
 
     @classmethod
-    def delete(cls):
-        pass
+    def delete(cls, id_server):
+        """Delete a server"""
+        server = Server(id_server=id_server)
+        
+        Server.delete(server)
+        
+        return {'message': 'Server deleted successfully'}, 204
