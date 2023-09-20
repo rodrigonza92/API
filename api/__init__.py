@@ -3,6 +3,7 @@ from flask_cors import CORS
 from config import Config
 
 from .routes.user_bp import user_bp
+from .routes.server_bp import server_bp
 
 from .database import DatabaseConnection
 
@@ -20,7 +21,7 @@ def init_app():
     DatabaseConnection.set_config(app.config)
 
     app.register_blueprint(user_bp, url_prefix = '/users')
-    #app.register_blueprint(server_bp, url_prefix = '/server')
+    app.register_blueprint(server_bp, url_prefix = '/servers')
     #app.register_blueprint(channel_bp, url_prefix = '/channel')
     #app.register_blueprint(massage_bp, url_prefix = '/massages')
 

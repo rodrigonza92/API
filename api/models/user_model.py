@@ -3,18 +3,7 @@ from ..database import DatabaseConnection
 class User:
     """User model class"""
     
-    # def __init__(self, **kwargs):
-    #     self.id_user = kwargs.get('id_user')
-    #     self.first_name = kwargs.get('first_name')
-    #     self.last_name = kwargs.get('last_name')
-    #     self.birthday = kwargs.get('birthday')
-    #     self.email = kwargs.get('email')
-    #     self.username = kwargs.get('username')
-    #     self.password = kwargs.get('passwd')
-    #     self.id_server = kwargs.get('id_server')
-    
-    def __init__(self, id_user = None, first_name = None, last_name = None, 
-                 birthday = None, email = None, username = None, passwd = None, id_server = None):
+    def __init__(self, id_user = None, first_name = None, last_name = None, birthday = None, email = None, username = None, passwd = None, id_server = None):
         """Constructor method"""
         self.id_user = id_user
         self.first_name = first_name
@@ -51,8 +40,7 @@ class User:
         result = DatabaseConnection.fetch_one(query, params=params)
 
         return cls(*result)
-        #else:
-            #raise UserNotFound(user.user_id)
+
     
     @classmethod
     def get_all(cls):
