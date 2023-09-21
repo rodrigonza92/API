@@ -3,8 +3,7 @@ from ..database import DatabaseConnection
 class User:
     """User model class"""
     
-    def __init__(self, id_user = None, first_name = None, last_name = None, 
-                 birthday = None, email = None, username = None, passwd = None, id_server = None):
+    def __init__(self, id_user = None, first_name = None, last_name = None, birthday = None, email = None, username = None, passwd = None, id_server = None):
         """Constructor method"""
         self.id_user = id_user
         self.first_name = first_name
