@@ -8,6 +8,14 @@ class Channel:
         self.descripcion = descripcion
         self.id_message = id_message
 
+    def serialize(self):
+        return {
+            "id_server": self.id_channel,
+            "nombre": self.nombre,
+            "descripcion": self.descripcion,
+            "id_message": self.id_message
+        }
+    
     @classmethod
     def get(cls, channel):
         """Get a channel by id
