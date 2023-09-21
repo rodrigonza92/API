@@ -2,102 +2,80 @@ from ..database import DatabaseConnection
 
 class Message:
 
-    def __init__(self, **kwargs):
-        self.id_message = kwargs.get('id_message')
-        self.id_channel = kwargs.get('id_channel')
-        self.id_user = kwargs.get('id_user')
-        self.mensaje = kwargs.get('mensaje')
+    def __init__(self, id_message = None, id_user = None, fecha = None, mensaje = None):
+        self.id_message = id_message
+        self.id_user = id_user
+        self.fecha = fecha
+        self.mensaje = mensaje
     
 
+    def serialize(self):
+        return {
+            "id_message": self.id_message,
+            "id_user": self.id_user,
+            "fecha": self.fecha,
+            "mensaje": self.mensaje
+        }
+
     @classmethod
-    def get(cls, msg):
-        """Get a msg by id
+    def get(cls, message):
+        """Get a message by id
         Args:
-            - msg (msg): msg object with the id attribute
+            - message (message): message object with the id attribute
         Returns:
-            - msg: msg object
+            - message: message object
         """
 
-        query = """SELECT id_message, id_channel, id_user, mensaje 
-        FROM mensaje WHERE id_message = %s"""
-        params = msg.msg_id,
+        query = """SELECT id_message, id_user, fecha, mensaje FROM db_tif.mensaje WHERE id_message = %s"""
+        params = message.id_message,
         result = DatabaseConnection.fetch_one(query, params=params)
 
-        if result is not None:
-            return cls(*result)
-        #else:
-            #raise msgNotFound(msg.msg_id)
+        return cls(*result)
     
     @classmethod
     def get_all(cls):
-        """Get all msgs
+        """Get all messages
         Returns:
-            - list: List of msg objects
+            - list: List of message objects
         """
-        query = """SELECT id_message, id_channel, id_user, mensaje
-        FROM mensaje"""
+        query = """SELECT id_message, id_user, fecha, mensaje FROM db_tif.mensaje"""
         results = DatabaseConnection.fetch_all(query)
 
-        msgs = []
+        messages = []
         if results is not None:
             for result in results:
-                msgs.append(cls(*result))
-        return msgs
+                messages.append(cls(*result))
+        return messages
     
     @classmethod
-    def create(cls, msg):
-        """Create a new msg
+    def create(cls, message):
+        """Create a new message
         Args:
-            - msg (msg): msg object
+            - message (message): message object
         """
-        query = """INSERT INTO mensaje (id_message, id_channel, id_user, mensaje) 
-        VALUES (%s, %s, %s, %s)"""
-        
-        # if msg.special_features is not None:
-        #     special_features = ','.join(msg.special_features)
-        # else:
-        #     special_features = None
-        
-        # data = ["Trailers", "Commentaries", "Deleted Scenes", "Behind the Scenes"]
+        query = """INSERT INTO db_tif.servidor (id_user, fecha, mensaje) VALUES (%s, %s, %s);"""
 
-        # if len(msg.title) >= 3 and isinstance(msg.language_id, int) and isinstance(msg.rental_duration,int):
-
-        params = msg.id_messaje, msg.id_channel, msg.id_user, msg.mensaje
+        params = message.id_user, message.fecha, message.mensaje,
         DatabaseConnection.execute_query(query, params=params)
-        # else:
-        #     raise InvalidDataError()
 
     @classmethod
-    def update(cls, msg):
-        """Update a msg
+    def update(cls, message):
+        """Update a message
         Args:
-            - msg (msg): msg object
+            - message (message): message object
         """
 
-        allowed_columns = {'id_message', 'id_channel', 'id_user', 'mensaje'}
-        query_parts = []
-        params = []
-        for key, value in msg.__dict__.items():
-            if key in allowed_columns and value is not None:
-                if key == 'special_features':
-                    if len(value) == 0:
-                        value = None
-                    else:
-                        value = ','.join(value)
-                query_parts.append(f"{key} = %s")
-                params.append(value)
-        params.append(msg.msg_id)
-
-        query = "UPDATE mensaje SET " + ", ".join(query_parts) + " WHERE id_message = %s"
+        params = message.id_user, message.fecha, message.mensaje, message.id_message,
+        query = "UPDATE db_tif.servidor SET nombre = %s, descripcion = %s, id_user = %s, id_channel = %s WHERE id_message = %s;"
         DatabaseConnection.execute_query(query, params=params)
     
     @classmethod
-    def delete(cls, msg):
-        """Delete a msg
+    def delete(cls, message):
+        """Delete a message
         Args:
-            - msg (msg): msg object with the id attribute
+            - message (message): message object with the id attribute
         """
 
-        query = "DELETE FROM mensaje WHERE id_message = %s;"
-        params = msg.id_message,
+        query = "DELETE FROM db_tif.message WHERE id_message = %s;"
+        params = message.id_message,
         DatabaseConnection.execute_query(query, params=params)

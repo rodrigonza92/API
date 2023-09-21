@@ -4,6 +4,7 @@ from config import Config
 
 from .routes.user_bp import user_bp
 from .routes.server_bp import server_bp
+from .routes.channel_bp import channel_bp
 
 from .database import DatabaseConnection
 
@@ -22,7 +23,7 @@ def init_app():
 
     app.register_blueprint(user_bp, url_prefix = '/users')
     app.register_blueprint(server_bp, url_prefix = '/servers')
-    #app.register_blueprint(channel_bp, url_prefix = '/channel')
+    app.register_blueprint(channel_bp, url_prefix = '/channels')
     #app.register_blueprint(massage_bp, url_prefix = '/massages')
 
     #app.register_blueprint(errors, url_prefix = '/errors')

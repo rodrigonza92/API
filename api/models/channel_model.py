@@ -2,11 +2,20 @@ from ..database import DatabaseConnection
 
 class Channel:
 
-    def __init__(self, **kwargs):
-        self.id_channel = kwargs.get('id_channel')
-        self.nombre = kwargs.get('nombre')
-        self.descripcion = kwargs.get('descripcion')
+    def __init__(self, id_channel = None, nombre = None, descripcion = None, id_message = None):
+        self.id_channel = id_channel
+        self.nombre = nombre
+        self.descripcion = descripcion
+        self.id_message = id_message
 
+    def serialize(self):
+        return {
+            "id_server": self.id_channel,
+            "nombre": self.nombre,
+            "descripcion": self.descripcion,
+            "id_message": self.id_message
+        }
+    
     @classmethod
     def get(cls, channel):
         """Get a channel by id
@@ -16,15 +25,11 @@ class Channel:
             - channel: channel object
         """
 
-        query = """SELECT id_channel, nombre, descripcion
-        FROM canal WHERE id_channel = %s"""
+        query = """SELECT id_channel, nombre, descripcion, id_message FROM db_tif.canal WHERE id_channel = %s"""
         params = channel.id_channel,
         result = DatabaseConnection.fetch_one(query, params=params)
 
-        if result is not None:
-            return cls(*result)
-        #else:
-            #raise channelNotFound(channel.channel_id)
+        return cls(*result)
     
     @classmethod
     def get_all(cls):
@@ -32,8 +37,7 @@ class Channel:
         Returns:
             - list: List of channel objects
         """
-        query = """SELECT id_channel, nombre, descripcion
-        FROM canal"""
+        query = """SELECT id_channel, nombre, descripcion, id_message FROM db_tif.canal"""
         results = DatabaseConnection.fetch_all(query)
 
         channels = []
@@ -48,21 +52,10 @@ class Channel:
         Args:
             - channel (channel): channel object
         """
-        query = """INSERT INTO db_tif.canal (nombre, descripcion) VALUES (%s, %s);"""
-        
-        # if channel.special_features is not None:
-        #     special_features = ','.join(channel.special_features)
-        # else:
-        #     special_features = None
-        
-        # data = ["Trailers", "Commentaries", "Deleted Scenes", "Behind the Scenes"]
+        query = """INSERT INTO db_tif.canal (nombre, descripcion, id_message) VALUES (%s, %s, %s);"""
 
-        #if len(channel.title) >= 3 and isinstance(channel.language_id, int) and isinstance(channel.rental_duration,int):
-
-        params = channel.id_channel, channel.nombre, channel.descripcion
+        params = channel.nombre, channel.descripcion, channel.id_message,
         DatabaseConnection.execute_query(query, params=params)
-        #else:
-            #raise InvalidDataError()
 
     @classmethod
     def update(cls, channel):
@@ -70,22 +63,8 @@ class Channel:
         Args:
             - channel (channel): channel object
         """
-
-        allowed_columns = {'id_channel', 'nombre', 'descripcion'}
-        query_parts = []
-        params = []
-        for key, value in channel.__dict__.items():
-            if key in allowed_columns and value is not None:
-                if key == 'special_features':
-                    if len(value) == 0:
-                        value = None
-                    else:
-                        value = ','.join(value)
-                query_parts.append(f"{key} = %s")
-                params.append(value)
-        params.append(channel.id_channel)
-
-        query = "UPDATE canal SET " + ", ".join(query_parts) + " WHERE id_channel = %s"
+        params = channel.nombre, channel.descripcion, channel.id_message,
+        query = "UPDATE db_tif.canal SET nombre = %s, descripcion = %s, id_message = %s WHERE id_channel = %s;"
         DatabaseConnection.execute_query(query, params=params)
     
     @classmethod
@@ -95,6 +74,6 @@ class Channel:
             - channel (channel): channel object with the id attribute
         """
 
-        query = "DELETE FROM canal WHERE id_channel = %s;"
+        query = "DELETE FROM db_tif.canal WHERE id_channel = %s;"
         params = channel.id_channel,
         DatabaseConnection.execute_query(query, params=params)
