@@ -8,7 +8,7 @@ class User:
         self.id_user = id_user
         self.first_name = first_name
         self.last_name = last_name
-        self.birthday = birthday
+        self.birthday = birthday    #El formato de fecha tiene que ser 1999-04-07
         self.email = email
         self.username = username
         self.password = passwd
