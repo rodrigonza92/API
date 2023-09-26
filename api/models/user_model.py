@@ -62,8 +62,8 @@ class User:
         Args:
             - user (user): user object
         """
-        query = """INSERT INTO db_tif.usuario (first_name, last_name, birthday, email, username, passwd) VALUES (%s, %s, STR_TO_DATE(%s, '%d-%M-%Y'), %s, %s, %s, %s)"""
-
+        query = """INSERT INTO db_tif.usuario (first_name, last_name, birthday, email, username, passwd) VALUES (%s, %s, STR_TO_DATE(%s, "%Y-%m-%d"), %s, %s, %s)"""
+        # La fecha debe ser del forma Año-mes-dia --> Ejemplo '2000-07-20'
         params = user.first_name, user.last_name, user.birthday, user.email, user.username, user.password,
         DatabaseConnection.execute_query(query, params=params)
 
