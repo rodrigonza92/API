@@ -22,6 +22,8 @@ def init_app():
 
     DatabaseConnection.set_config(app.config)
 
+    DatabaseConnection.create_bd()
+
     app.register_blueprint(user_bp, url_prefix = '/users')
     app.register_blueprint(server_bp, url_prefix = '/servers')
     app.register_blueprint(channel_bp, url_prefix = '/channels')
