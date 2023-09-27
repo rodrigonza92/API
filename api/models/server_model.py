@@ -2,20 +2,17 @@ from ..database import DatabaseConnection
 
 class Server:
 
-    def __init__(self, id_server = None, nombre = None, descripcion = None, id_user = None, id_channel = None):
+    def __init__(self, id_server = None, nombre = None, descripcion = None):
         self.id_server = id_server
         self.nombre = nombre
         self.descripcion = descripcion
-        self.id_user = id_user
-        self.id_channel = id_channel
+
     
     def serialize(self):
         return {
             "id_server": self.id_server,
             "nombre": self.nombre,
             "descripcion": self.descripcion,
-            "id_user": self.id_user,
-            "id_channel": self.id_channel
         }
 
     @classmethod
@@ -39,7 +36,7 @@ class Server:
         Returns:
             - list: List of server objects
         """
-        query = """SELECT id_server, nombre, descripcion, id_user, id_channel FROM db_tif.servidor"""
+        query = """SELECT id_server, nombre, descripcion FROM db_tif.servidor"""
         results = DatabaseConnection.fetch_all(query)
 
         servers = []
