@@ -2,10 +2,11 @@ from ..database import DatabaseConnection
 
 class Server:
 
-    def __init__(self, id_server = None, nombre = None, descripcion = None):
+    def __init__(self, id_server = None, nombre = None, descripcion = None, id_user = None):
         self.id_server = id_server
         self.nombre = nombre
         self.descripcion = descripcion
+        self.id_user = id_user
 
     
     def serialize(self):
@@ -51,10 +52,13 @@ class Server:
         Args:
             - server (server): server object
         """
-        query = """INSERT INTO db_tif.servidor (nombre, descripcion, id_user, id_channel) VALUES (%s, %s, %s, %s);"""
+        query = """INSERT INTO db_tif.servidor (nombre, descripcion) VALUES (%s, %s);"""
 
-        params = server.nombre, server.descripcion, server.id_user, server.id_channel,
+        params = server.nombre, server.descripcion
         DatabaseConnection.execute_query(query, params=params)
+
+        query2 = """"INSERT INTO db_tif.membresia_servidor (id_user, id_server) VALUES (%s,%s),"""
+        params2 = cls.id_user, server.id_server
 
     @classmethod
     def update(cls, server):
@@ -77,3 +81,18 @@ class Server:
         query = "DELETE FROM db_tif.servidor WHERE id_server = %s;"
         params = server.id_server,
         DatabaseConnection.execute_query(query, params=params)
+
+    @classmethod
+    def server_user(cls, server):
+        """Get a server by id
+        Args:
+            - server (server): server object with the id attribute
+        Returns:
+            - server: server object
+        """
+
+        query = """SELECT id_server, nombre, descripcion FROM db_tif.servidor WHERE id_server = %s"""
+        params = server.id_server, server.id_user
+        result = DatabaseConnection.fetch_one(query, params=params)
+
+        return cls(*result)
