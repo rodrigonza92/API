@@ -74,7 +74,7 @@ class User:
             - user (user): user object
         """
         params = user.first_name, user.last_name, user.birthday, user.email, user.username, user.password, user.id_user,
-        query = "UPDATE db_tif.usuario SET first_name = %s, last_name = %s, birthday = STR_TO_DATE(%s, '%d-%M-%Y'), email = %s, username = %s, passwd = %s WHERE id_user = %s;"
+        query = "UPDATE db_tif.usuario SET first_name = %s, last_name = %s, birthday = STR_TO_DATE(%s, '%Y-%m-%d'), email = %s, username = %s, passwd = %s WHERE id_user = %s;"
         DatabaseConnection.execute_query(query, params=params)
     
     @classmethod
