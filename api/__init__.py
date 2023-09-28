@@ -14,7 +14,7 @@ def init_app():
     
     app = Flask(__name__, static_folder = Config.STATIC_FOLDER, template_folder = Config.TEMPLATE_FOLDER)
     
-    CORS(app, supports_credentials=True)
+    CORS(app, supports_credentials=True ,resources={r"/*": {"origins": "*"}})
 
     app.config.from_object(
         Config

@@ -137,3 +137,19 @@ class Server:
         result = DatabaseConnection.fetch_one(query, params=params)
 
         return cls(*result)
+    
+    @classmethod
+    def add_server(cls, server):
+        """Create a new server and return its ID along with the user ID
+        Args:
+            - server (server): server object
+            - user_id (int): ID of the user who created the server
+        Returns:
+            - int: ID of the newly created server
+        """
+
+       #Creo un registro de membresia con el id del usuario logueado y el ultimo id de server creado
+        query = """INSERT INTO db_tif.membresia_servidor (id_user, id_server) VALUES (%s, %s)"""
+        params = server.id_user, server.id_server,
+        DatabaseConnection.execute_query(query, params=params)
+            
