@@ -47,7 +47,7 @@ class Server:
         return servers
     
     @classmethod
-    def create(cls, server, user_id):
+    def create(cls, server):
         """Create a new server and return its ID along with the user ID
         Args:
             - server (server): server object
@@ -56,8 +56,9 @@ class Server:
             - int: ID of the newly created server
         """
 
+
         #Si existe el id del usuario que crea el servidor
-        if user_id:
+        if server.id_user is not None:
             #Creo un nuevo servidor con el id del usuario logueado
             query = """INSERT INTO db_tif.servidor (nombre, descripcion) VALUES (%s, %s);"""
             params = server.nombre, server.descripcion,
@@ -65,11 +66,13 @@ class Server:
 
             #Capturo el id del ultimo servidor creado
             query2 = """SELECT MAX(id_server) AS id FROM db_tif.servidor;"""
-            id_server = DatabaseConnection.execute_query(query2)
+            param2 = None
+            id_server = DatabaseConnection.fetch_one(query2, params=param2)
+            id_server = id_server[0]
 
             #Creo un registro de membresia con el id del usuario logueado y el ultimo id de server creado
             query3 = """INSERT INTO db_tif.membresia_servidor (id_user, id_server) VALUES (%s, %s)"""
-            params3 = user_id, id_server,
+            params3 = server.id_user, id_server,
             DatabaseConnection.execute_query(query3, params=params3)
             
         else:
