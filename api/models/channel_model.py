@@ -2,18 +2,16 @@ from ..database import DatabaseConnection
 
 class Channel:
 
-    def __init__(self, id_channel = None, nombre = None, descripcion = None, id_message = None):
+    def __init__(self, id_channel = None, id_server = None, nombre = None):
         self.id_channel = id_channel
+        self.id_server = id_server
         self.nombre = nombre
-        self.descripcion = descripcion
-        self.id_message = id_message
 
     def serialize(self):
         return {
-            "id_server": self.id_channel,
+            "id_channel": self.id_channel,
+            "id_server": self.id_server,
             "nombre": self.nombre,
-            "descripcion": self.descripcion,
-            "id_message": self.id_message
         }
     
     @classmethod
@@ -25,7 +23,7 @@ class Channel:
             - channel: channel object
         """
 
-        query = """SELECT id_channel, nombre, descripcion, id_message FROM db_tif.canal WHERE id_channel = %s"""
+        query = """SELECT id_canal, id_server, nombre FROM db_tif.canal WHERE id_canal = %s"""
         params = channel.id_channel,
         result = DatabaseConnection.fetch_one(query, params=params)
 
@@ -37,7 +35,7 @@ class Channel:
         Returns:
             - list: List of channel objects
         """
-        query = """SELECT id_channel, nombre, descripcion, id_message FROM db_tif.canal"""
+        query = """SELECT id_canal, id_server, nombre FROM db_tif.canal"""
         results = DatabaseConnection.fetch_all(query)
 
         channels = []
