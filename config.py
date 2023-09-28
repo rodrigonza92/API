@@ -4,7 +4,7 @@ class Config:
     config = dotenv_values(".env")
     
     SECRET_KEY = config['SECRET_KEY']
-    SERVER_NAME = "127.0.0.1:3306"
+    SERVER_NAME = "127.0.0.1:5000"
     DEBUG = True
 
     DATABASE_USERNAME = config['DATABASE_USERNAME']
