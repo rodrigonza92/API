@@ -1,39 +1,41 @@
--- create schemas
-CREATE DATABASE IF NOT EXISTS db_tif;
+--                        DATOS PARA REALIZAR TEST DE LA APP
 
--- create tables
-CREATE TABLE IF NOT EXISTS db_tif.usuario (
-    id_user INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR (50) NOT NULL, 
-    last_name VARCHAR (50) NOT NULL,
-    birthday DATE NOT NULL,
-    email VARCHAR (50) NOT NULL,
-    username VARCHAR (50) NOT NULL,
-    passwd VARCHAR (50) NOT NULL
-);
+-- DATOS PARA USUARIOS
+INSERT INTO db_tif.usuario (first_name, last_name, birthday, email, username, passwd)
+VALUES
+    ('Juan', 'Perez', '1990-05-15', 'juan@example.com', 'juanito', 'contrasena1'),
+    ('Maria', 'Gonzalez', '1985-08-20', 'maria@example.com', 'maria123', 'contrasena2'),
+    ('Carlos', 'Rodriguez', '1992-03-10', 'carlos@example.com', 'carlitos', 'contrasena3'),
+    ('Laura', 'Lopez', '1988-12-05', 'laura@example.com', 'laurita', 'contrasena4'),
+    ('Pedro', 'Martinez', '1995-07-25', 'pedro@example.com', 'pedrito', 'contrasena5'),
+    ('Ana', 'Sanchez', '1993-02-18', 'ana@example.com', 'anita', 'contrasena6'),
+    ('Luis', 'Torres', '1987-09-30', 'luis@example.com', 'lucho', 'contrasena7'),
+    ('Sofia', 'Gomez', '1998-04-12', 'sofia@example.com', 'sofi', 'contrasena8'),
+    ('Diego', 'Fernandez', '1994-06-08', 'diego@example.com', 'dieguito', 'contrasena9'),
+    ('Elena', 'Hernandez', '1991-11-22', 'elena@example.com', 'elena123', 'contrasena10');
 
-CREATE TABLE IF NOT EXISTS db_tif.mensaje (
-    id_message INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    id_user INT NOT NULL,
-    fecha DATETIME NOT NULL,
-    mensaje VARCHAR (255) NOT NULL,
-    FOREIGN KEY (id_user) REFERENCES db_tif.usuario (id_user) ON DELETE CASCADE ON UPDATE CASCADE
-);
+-- PARA SERVIDORES
 
-CREATE TABLE IF NOT EXISTS db_tif.canal (
-    id_channel INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR (50) NOT NULL,
-    descripcion VARCHAR (255) NOT NULL,
-    id_message INT NOT NULL,
-    FOREIGN KEY (id_message) REFERENCES db_tif.mensaje (id_message) ON DELETE CASCADE ON UPDATE CASCADE
-);
+INSERT INTO db_tif.servidor (nombre, descripcion)
+VALUES
+    ('Servidor de Cine', 'Ofrece películas y series en línea.'),
+    ('Servidor de Juegos', 'Proporciona acceso a juegos en línea.'),
+    ('Servidor de Música', 'Transmite música en línea.'),
+    ('Servidor de Almacenamiento', 'Almacena archivos y documentos en la nube.'),
+    ('Servidor de Chat', 'Facilita la comunicación en línea entre usuarios.');
 
-CREATE TABLE IF NOT EXISTS db_tif.servidor (
-    id_server INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR (50) NOT NULL,
-    descripcion VARCHAR (255) NOT NULL,
-    id_user INT NOT NULL,
-    id_channel INT NOT NULL,
-    FOREIGN KEY (id_user) REFERENCES db_tif.usuario (id_user) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (id_channel) REFERENCES db_tif.canal (id_channel) ON DELETE CASCADE ON UPDATE CASCADE
-);
+-- PARA MEMBRESIA_SERVIDOR    
+    
+INSERT INTO db_tif.membresia_servidor (id_user, id_server)
+VALUES
+    (1,1),
+    (1,2),
+    (3,1),
+    (3,4);   
+
+-- PARA CANALES
+
+INSERT INTO db_tif.canal (nombre, id_server)
+VALUES ('Canal 1', 1),
+       ('Canal 2', 2),
+       ('Canal 3', 1);
