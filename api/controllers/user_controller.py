@@ -33,12 +33,20 @@ class UserController:
     @classmethod
     def update(cls, id_user):
         """Update a user"""
-        data = request.json
+        data_parcial = request.json
+
+        get = cls.get(id_user)
+
+        data = get[0]
         
+        for field, value in data_parcial.items():
+            data[field] = value
+
         data['id_user'] = id_user
+        
 
         user = User(**data)
-        
+        #print(user)
         User.update(user)
         
         return {'message': 'User updated successfully'}, 200

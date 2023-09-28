@@ -22,6 +22,16 @@ class ServerController:
         return servers, 200
 
     @classmethod
+    def get_servers(cls, id_user):
+        """Get all servers referidos a un ID de usuario"""
+        server = Server(id_user=id_user)
+        results = Server.get_servers(server)
+        servers = []
+        for server in results:
+            servers.append(server.serialize())
+        return servers, 200
+    
+    @classmethod
     def create(cls):
         """Create a new server"""
         data = request.json
@@ -29,6 +39,15 @@ class ServerController:
         server = Server(**data)
         Server.create(server)
         return {'message': 'Server created successfully'}, 201
+    
+    @classmethod
+    def add_server_member(cls):
+        """Create a new server member"""
+        data = request.json
+
+        server = Server(**data)
+        Server.add_server(server)
+        return {'message': 'Server member created successfully'}, 201
 
     @classmethod
     def update(cls, id_server):
