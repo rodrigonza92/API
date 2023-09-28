@@ -47,19 +47,38 @@ class Server:
         return servers
     
     @classmethod
-    def create(cls, server):
-        """Create a new server
+    def create(cls, server, user_id):
+        """Create a new server and return its ID along with the user ID
         Args:
             - server (server): server object
+            - user_id (int): ID of the user who created the server
+        Returns:
+            - int: ID of the newly created server
         """
-        query = """INSERT INTO db_tif.servidor (nombre, descripcion) VALUES (%s, %s);"""
 
-        params = server.nombre, server.descripcion
-        DatabaseConnection.execute_query(query, params=params)
+        #Si existe el id del usuario que crea el servidor
+        if user_id:
+            #Creo un nuevo servidor con el id del usuario logueado
+            query = """INSERT INTO db_tif.servidor (nombre, descripcion) VALUES (%s, %s);"""
+            params = server.nombre, server.descripcion,
+            DatabaseConnection.execute_query(query, params=params)
 
-        query2 = """"INSERT INTO db_tif.membresia_servidor (id_user, id_server) VALUES (%s,%s),"""
-        params2 = cls.id_user, server.id_server
+            #Capturo el id del ultimo servidor creado
+            query2 = """SELECT MAX(id_server) AS id FROM db_tif.servidor;"""
+            id_server = DatabaseConnection.execute_query(query2)
 
+            #Creo un registro de membresia con el id del usuario logueado y el ultimo id de server creado
+            query3 = """INSERT INTO db_tif.membresia_servidor (id_user, id_server) VALUES (%s, %s)"""
+            params3 = user_id, id_server,
+            DatabaseConnection.execute_query(query3, params=params3)
+            
+        else:
+            #En el caso que el usuario no este logueado, se crea el servidor sin id
+            query = """INSERT INTO db_tif.servidor (nombre, descripcion) VALUES (%s, %s);"""
+
+            params = server.nombre, server.descripcion,
+            DatabaseConnection.execute_query(query, params=params)
+    
     @classmethod
     def update(cls, server):
         """Update a server
