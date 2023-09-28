@@ -39,6 +39,15 @@ class ServerController:
         server = Server(**data)
         Server.create(server)
         return {'message': 'Server created successfully'}, 201
+    
+    @classmethod
+    def add_server_member(cls):
+        """Create a new server member"""
+        data = request.json
+
+        server = Server(**data)
+        Server.add_server(server)
+        return {'message': 'Server member created successfully'}, 201
 
     @classmethod
     def update(cls, id_server):
