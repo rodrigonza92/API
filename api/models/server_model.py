@@ -45,6 +45,25 @@ class Server:
             for result in results:
                 servers.append(cls(*result))
         return servers
+
+    @classmethod
+    def get_servers(cls, server):
+        """Get a server by id
+        Args:
+            - server (server): server object with the id attribute
+        Returns:
+            - server: server object
+        """
+
+        query = f"SELECT db_tif.servidor.id_server, db_tif.servidor.nombre FROM db_tif.servidor INNER JOIN db_tif.membresia_servidor ON db_tif.servidor.id_server = db_tif.membresia_servidor.id_server WHERE db_tif.membresia_servidor.id_user = {server.id_user};"
+    
+        results = DatabaseConnection.fetch_all(query)
+
+        servers = []
+        if results is not None:
+            for result in results:
+                servers.append(cls(*result))
+        return servers
     
     @classmethod
     def create(cls, server, user_id):
