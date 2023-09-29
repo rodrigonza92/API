@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS db_tif.membresia_servidor (
 );
         """
         cursor.execute(query)
+        cls.close_connection()
 
     @classmethod
     def execute_query(cls, query, database_name=None, params=None):
