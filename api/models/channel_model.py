@@ -2,16 +2,18 @@ from ..database import DatabaseConnection
 
 class Channel:
 
-    def __init__(self, id_channel = None, id_server = None, nombre = None):
+    def __init__(self, id_channel = None, nombre = None, id_server = None):
         self.id_channel = id_channel
         self.id_server = id_server
         self.nombre = nombre
+        self.id_server = id_server
 
     def serialize(self):
         return {
             "id_channel": self.id_channel,
             "id_server": self.id_server,
             "nombre": self.nombre,
+            "id_server": self.id_server
         }
     
     @classmethod
@@ -23,7 +25,7 @@ class Channel:
             - channel: channel object
         """
 
-        query = """SELECT id_canal, id_server, nombre FROM db_tif.canal WHERE id_canal = %s"""
+        query = """SELECT id_channel, nombre, id_server FROM db_tif.canal WHERE id_channel = %s"""
         params = channel.id_channel,
         result = DatabaseConnection.fetch_one(query, params=params)
 
@@ -35,7 +37,7 @@ class Channel:
         Returns:
             - list: List of channel objects
         """
-        query = """SELECT id_canal, id_server, nombre FROM db_tif.canal"""
+        query = """SELECT id_channel, nombre, id_server FROM db_tif.canal"""
         results = DatabaseConnection.fetch_all(query)
 
         channels = []
@@ -50,9 +52,9 @@ class Channel:
         Args:
             - channel (channel): channel object
         """
-        query = """INSERT INTO db_tif.canal (nombre, descripcion, id_message) VALUES (%s, %s, %s);"""
+        query = """INSERT INTO db_tif.canal (nombre, id_server) VALUES (%s, %s);"""
 
-        params = channel.nombre, channel.descripcion, channel.id_message,
+        params = channel.nombre, channel.id_server,
         DatabaseConnection.execute_query(query, params=params)
 
     @classmethod
@@ -61,8 +63,8 @@ class Channel:
         Args:
             - channel (channel): channel object
         """
-        params = channel.nombre, channel.descripcion, channel.id_message,
-        query = "UPDATE db_tif.canal SET nombre = %s, descripcion = %s, id_message = %s WHERE id_channel = %s;"
+        params = channel.nombre, channel.id_server,
+        query = "UPDATE db_tif.canal SET nombre = %s, id_server = %s WHERE id_channel = %s;"
         DatabaseConnection.execute_query(query, params=params)
     
     @classmethod

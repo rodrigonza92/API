@@ -93,6 +93,10 @@ class Server:
             query3 = """INSERT INTO db_tif.membresia_servidor (id_user, id_server) VALUES (%s, %s)"""
             params3 = server.id_user, id_server,
             DatabaseConnection.execute_query(query3, params=params3)
+
+            #Se crea un canal por DEFAULT llamado "General" al momento de crear un servidor
+            query4 = f"INSERT INTO db_tif.canal (nombre, id_server) VALUES ('General', {id_server});"
+            DatabaseConnection.execute_query(query4)
             
         else:
             #En el caso que el usuario no este logueado, se crea el servidor sin id
