@@ -22,6 +22,16 @@ class ChannelController:
         return channels, 200
 
     @classmethod
+    def get_channels(cls, id_server):
+        """Get all servers referidos a un ID de usuario"""
+        channel = Channel(id_server=id_server)
+        results = Channel.get_channels(channel)
+        channels = []
+        for channel in results:
+            channels.append(channel.serialize())
+        return channels, 200
+    
+    @classmethod
     def create(cls):
         """Create a new channel"""
         data = request.json

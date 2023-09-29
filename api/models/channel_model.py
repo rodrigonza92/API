@@ -45,6 +45,25 @@ class Channel:
         return channels
     
     @classmethod
+    def get_channels(cls, channel):
+        """Get a channel by id
+        Args:
+            - channel (channel): channel object with the id attribute
+        Returns:
+            - channel: channel object
+        """
+
+        query = f"SELECT db_tif.canal.id_channel, db_tif.canal.nombre, db_tif.canal.id_server FROM db_tif.canal WHERE db_tif.canal.id_server = {channel.id_server};"
+    
+        results = DatabaseConnection.fetch_all(query)
+
+        channels = []
+        if results is not None:
+            for result in results:
+                channels.append(cls(*result))
+        return channels
+    
+    @classmethod
     def create(cls, channel):
         """Create a new channel
         Args:
