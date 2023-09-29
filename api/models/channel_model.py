@@ -9,7 +9,7 @@ class Channel:
 
     def serialize(self):
         return {
-            "id_server": self.id_channel,
+            "id_channel": self.id_channel,
             "nombre": self.nombre,
             "id_server": self.id_server
         }
