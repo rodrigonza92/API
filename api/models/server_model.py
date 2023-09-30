@@ -25,7 +25,7 @@ class Server:
             - server: server object
         """
 
-        query = """SELECT id_server, nombre, descripcion, id_user, id_channel FROM db_tif.servidor WHERE id_server = %s"""
+        query = """SELECT id_server, nombre, descripcion FROM db_tif.servidor WHERE id_server = %s"""
         params = server.id_server,
         result = DatabaseConnection.fetch_one(query, params=params)
 
