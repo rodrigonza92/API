@@ -21,18 +21,22 @@ class Message:
 
     @classmethod
     def get(cls, message):
-        """Get a message by id
+        """Get a message by id_channel
         Args:
             - message (message): message object with the id attribute
         Returns:
             - message: message object
         """
 
-        query = """SELECT id_user, id_channel, fecha, mensaje FROM db_tif.mensaje WHERE id_channel = %s"""
+        query = """SELECT id_message, id_user, id_channel, fecha, mensaje FROM db_tif.mensaje WHERE id_channel = %s"""
         params = message.id_channel,
-        result = DatabaseConnection.fetch_all(query, params=params)
+        results = DatabaseConnection.fetch_all(query, params=params)
 
-        return cls(*result)
+        messages = []
+        if results is not None:
+            for result in results:
+                messages.append(cls(*result))
+        return messages
     
     @classmethod
     def get_all(cls):
@@ -55,9 +59,9 @@ class Message:
         Args:
             - message (message): message object
         """
-        query = """INSERT INTO db_tif.servidor (id_user, id_channel, fecha, mensaje) VALUES (%s, %s, %s, %s);"""
+        query = """INSERT INTO db_tif.mensaje (id_user, id_channel, fecha, mensaje) VALUES (%s, %s, NOW(), %s);"""
 
-        params = message.id_user, message.id_channel, message.fecha, message.mensaje,
+        params = message.id_user, message.id_channel, message.mensaje,
         DatabaseConnection.execute_query(query, params=params)
 
     @classmethod
@@ -67,8 +71,8 @@ class Message:
             - message (message): message object
         """
 
-        params = message.id_user, message.id_channel, message.fecha, message.mensaje, message.id_message,
-        query = "UPDATE db_tif.mensaje SET id_user = %s, id_channel = %s, fecha = %s, mensaje = %s WHERE id_message = %s;"
+        params = message.id_user, message.id_channel, message.mensaje, message.id_message,
+        query = "UPDATE db_tif.mensaje SET id_user = %s, id_channel = %s, fecha = NOW(), mensaje = %s WHERE id_message = %s;"
         DatabaseConnection.execute_query(query, params=params)
     
     @classmethod
@@ -78,6 +82,6 @@ class Message:
             - message (message): message object with the id attribute
         """
 
-        query = "DELETE FROM db_tif.message WHERE id_message = %s;"
+        query = "DELETE FROM db_tif.mensaje WHERE id_message = %s;"
         params = message.id_message,
         DatabaseConnection.execute_query(query, params=params)

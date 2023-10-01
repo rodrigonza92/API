@@ -7,8 +7,8 @@ class MessageController:
     @classmethod
     def get(cls, id_channel):
         """Get a message by id"""
-        messages = Message(id_channel=id_channel)
-        result = Message.get(messages)
+        id = Message(id_channel=id_channel)
+        result = Message.get(id)
         messages = []
         for message in result:
             messages.append(message.serialize())

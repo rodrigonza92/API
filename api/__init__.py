@@ -27,7 +27,7 @@ def init_app():
     app.register_blueprint(user_bp, url_prefix = '/users')
     app.register_blueprint(server_bp, url_prefix = '/servers')
     app.register_blueprint(channel_bp, url_prefix = '/channels')
-    app.register_blueprint(message_bp, url_prefix = '/massages')
+    app.register_blueprint(message_bp, url_prefix = '/messages')
 
     #app.register_blueprint(errors, url_prefix = '/errors')
 
