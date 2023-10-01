@@ -28,9 +28,9 @@ class Message:
             - message: message object
         """
 
-        query = """SELECT id_user, id_channel, fecha, mensaje FROM db_tif.mensaje WHERE id_message = %s"""
-        params = message.id_message,
-        result = DatabaseConnection.fetch_one(query, params=params)
+        query = """SELECT id_user, id_channel, fecha, mensaje FROM db_tif.mensaje WHERE id_channel = %s"""
+        params = message.id_channel,
+        result = DatabaseConnection.fetch_all(query, params=params)
 
         return cls(*result)
     

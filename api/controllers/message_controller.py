@@ -5,49 +5,51 @@ from flask import request
 class MessageController:
     
     @classmethod
-    def get(cls, id_message):
-        """Get a channel by id"""
-        channel = Message(id_message=id_message)
-        result = Message.get(channel)
-        if result is not None:
-            return result.serialize(), 200
+    def get(cls, id_channel):
+        """Get a message by id"""
+        messages = Message(id_channel=id_channel)
+        result = Message.get(messages)
+        messages = []
+        for message in result:
+            messages.append(message.serialize())
+        return messages, 200
 
     @classmethod
     def get_all(cls):
-        """Get all channels"""
-        channel_objects = Message.get_all()
-        channels = []
-        for channel in channel_objects:
-            channels.append(channel.serialize())
-        return channels, 200
+        """Get all messages"""
+        message_objects = Message.get_all()
+        messages = []
+        for message in message_objects:
+            messages.append(message.serialize())
+        return messages, 200
 
     @classmethod
     def create(cls):
-        """Create a new channel"""
+        """Create a new message"""
         data = request.json
         
-        channel = Message(**data)
-        Message.create(channel)
+        message = Message(**data)
+        Message.create(message)
         return {'message': 'Message created successfully'}, 201
 
     @classmethod
     def update(cls, id_message):
-        """Update a channel"""
+        """Update a message"""
         data = request.json
         
         data['id_message'] = id_message
 
-        channel = Message(**data)
+        message = Message(**data)
         
-        Message.update(channel)
+        Message.update(message)
         
         return {'message': 'Message updated successfully'}, 200
         
     @classmethod
     def delete(cls, id_message):
-        """Delete a channel"""
-        channel = Message(id_message=id_message)
+        """Delete a message"""
+        message = Message(id_message=id_message)
         
-        Message.delete(channel)
+        Message.delete(message)
         
         return {'message': 'Message deleted successfully'}, 204
