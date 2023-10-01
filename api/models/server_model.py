@@ -86,9 +86,9 @@ class Server:
             #Capturo el id del ultimo servidor creado
             query2 = """SELECT MAX(id_server) AS id FROM db_tif.servidor;"""
             param2 = None
-            id_server = DatabaseConnection.fetch_one(query2, params=param2)
-            id_server = id_server[0]
-
+            id_serv = DatabaseConnection.fetch_one(query2, params=param2)
+            id_server = id_serv[0]
+            
             #Creo un registro de membresia con el id del usuario logueado y el ultimo id de server creado
             query3 = """INSERT INTO db_tif.membresia_servidor (id_user, id_server) VALUES (%s, %s)"""
             params3 = server.id_user, id_server,
