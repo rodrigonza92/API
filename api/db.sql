@@ -39,3 +39,15 @@ INSERT INTO db_tif.canal (nombre, id_server)
 VALUES ('Canal 1', 1),
        ('Canal 2', 2),
        ('Canal 3', 1);
+
+
+-- PARA MENSAJES
+INSERT INTO db_tif.mensaje (id_user, id_channel, fecha, mensaje) 
+VALUES 
+(1, 1, NOW(), "Hola a todos!"),
+(2, 1, NOW(), "Hola gente! Como estan?"),
+(3, 1, NOW(), "Hola! Yo bien, y ustedes?"),
+(1, 1, NOW(), "Todo joya! Que hacen?"),
+(2, 1, NOW(), "Nada... aqui viendo el partido..."),
+(4, 1, NOW(), "Yo estoy preparandome para ir al GYM"),
+(3, 1, NOW(), "Yo me voy a dormir una siesta!!  XD");
